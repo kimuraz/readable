@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Router, Route } from 'react-router';
+import createBrowserHistory from 'history/createBrowserHistory';
+
+import Header from './views/Header';
+import RootView from './views/RootView';
+
+const history = createBrowserHistory()
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Header />
+        <main>
+          <Router history={history}>
+            <Route exact path='/' component={RootView} />
+          </Router>
+        </main>
       </div>
     );
   }
