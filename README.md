@@ -26,4 +26,4 @@ $ yarn build
 
 ```
 
-> Note that this app needs a API server to work, it can be found [here](https://github.com/udacity/reactnd-project-readable-starter)
+> Note that this app needs aa API server to work, it can be found [here](https://github.com/udacity/reactnd-project-readable-starter)
