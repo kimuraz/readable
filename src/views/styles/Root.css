@@ -30,6 +30,7 @@
     right: 10px;
     bottom: 20px;
     margin: 5px;
+    z-index: 99;
 }
 
 .Categories {

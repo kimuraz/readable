@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_CATEGORY, ADD_POST, SORT_POSTS_BY, EDIT_POST } from '../actions/types';
-import { CardActions } from '../../node_modules/@material-ui/core';
+import { ADD_CATEGORY, ADD_POST, SORT_POSTS_BY, EDIT_POST, ADD_COMMENT } from '../actions/types';
 
 
 export const categoryReducer = (state = [], action) => {
@@ -46,7 +45,20 @@ export const postsReducer = (state = { posts: [], sorting: 'timestamp' }, action
     }
 }
 
+export const commentsReducer = (state = [], action) => {
+    switch(action.type) {
+        case ADD_COMMENT:
+            const { comment } = action;
+            const newComments = [...state];
+            newComments.push(comment);
+            return newComments;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     categoryReducer,
+    commentsReducer,
     postsReducer,
 });
