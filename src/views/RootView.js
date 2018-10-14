@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import api from '../utils/api';
 
@@ -18,20 +19,23 @@ import AddIcon from '@material-ui/icons/Add';
 import { addCategory, addPost } from '../actions';
 
 import './styles/Root.css';
-import PostListitem from './PostListitem';
+import PostListitem from './posts/PostListitem';
 import SelectSorting from './SelectSorting';
 
 class RootView extends React.Component {
+
   constructor() {
     super();
-
     this.state = {
-      selectedCategory: 'ALL'
-    };
+      selectedCategory: 'ALL',
+    }
   }
 
   componentDidMount() {
-    const { categories, posts, dispatch } = this.props;
+    const { categories, posts, dispatch, match: { params: { category } } } = this.props;
+    if (category) {
+      this.setState({ selectedCategory: category });
+    }
     if (!categories || !categories.length) {
       api.categoryApi.getAll().then(res => {
         res.categories.forEach(c => {
@@ -49,24 +53,15 @@ class RootView extends React.Component {
     }
   }
 
-  selectCategory(name) {
-    if (this.state.selectedCategory === name) {
-      this.setState({ ...this.state, selectedCategory: 'ALL' });
-    } else {
-      this.setState({ ...this.state, selectedCategory: name });
-    }
-  }
-
   render() {
-    const { categories, posts } = this.props;
-    const { selectedCategory } = this.state;
-    const filteredPosts = posts.filter(p => selectedCategory === 'ALL' ? true : p.category === selectedCategory);
+    const { categories, posts, match: { params: { category }} } = this.props;
+    const filteredPosts = posts.filter(p => !category ? true : p.category === category);
     return (
       <Grid container>
         <Grid item xs={12} className="RootHeader">
           <Typography variant="title">Category:</Typography>
           <Typography variant="title" color="primary" className="RootCategory">
-            {selectedCategory}
+            {category || 'All'}
           </Typography>
         </Grid>
         <Grid item xs={9} className="PostContainer">
@@ -101,22 +96,26 @@ class RootView extends React.Component {
               <Typography variant="title">Categories</Typography>
             </ListItem>
             {categories &&
-              categories.map(category => (
+              categories.map(c => (
                 <ListItem
-                  key={category.name}
+                  key={c.name}
                   button
-                  onClick={() => this.selectCategory(category.name)}
                   className={
-                    category.name === this.state.selectedCategory
+                    c.name === category
                       ? 'SelectedCategory'
                       : ''
                   }
                 >
                   <ListItemText className="CategoryName">
-                    {category.name}
+                    <Link to={`/${c.name}`}>
+                      {c.name}
+                    </Link>
                   </ListItemText>
                 </ListItem>
               ))}
+              <ListItem>
+                <Link to="/">All</Link>
+              </ListItem>
           </List>
         </Grid>
       </Grid>
@@ -130,4 +129,4 @@ const mapStateToProps = ({ categoryReducer, postsReducer }) => ({
   sorting: postsReducer.sorting
 });
 
-export default connect(mapStateToProps)(RootView);
+export default withRouter(connect(mapStateToProps)(RootView));

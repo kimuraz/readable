@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addComment } from '../actions';
+import { addComment } from '../../actions';
 import { TextField, FormControl, Button } from '@material-ui/core';
-import { commentsApi } from '../utils/api';
-import idGenerator from '../utils/idGenerator';
+import { commentsApi } from '../../utils/api';
+import idGenerator from '../../utils/idGenerator';
 
-import './styles/NewComment.css';
+import '../styles/NewComment.css';
 
 class NewComment extends React.Component {
   constructor(props) {

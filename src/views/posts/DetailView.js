@@ -2,15 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { postsApi } from '../utils/api';
-import {
-  Typography,
-} from '@material-ui/core';
-import { addPost, addComment } from '../actions';
+import { postsApi } from '../../utils/api';
+import { Typography } from '@material-ui/core';
+import { addPost, addComment } from '../../actions';
 
-import './styles/Detail.css';
-import CommentList from './CommentList';
-import NewComment from './NewComment';
+import '../styles/Detail.css';
+import CommentList from '../comments/CommentList';
+import NewComment from '../comments/NewComment';
+import VotePost from './VotePost';
 
 class DetailView extends React.Component {
   componentDidMount() {
@@ -37,7 +36,6 @@ class DetailView extends React.Component {
   render() {
     const {
       posts,
-      comments,
       match: {
         params: { id }
       }
@@ -55,11 +53,19 @@ class DetailView extends React.Component {
         </header>
 
         <main>{post && post.body && <Typography>{post.body}</Typography>}</main>
-        
-        <hr></hr>
+
+        <hr />
+        {post && (
+          <Typography variant="caption">
+            Summary: The post has the total score of {post.voteScore} and{' '}
+            {post.commentCount} comments.
+          </Typography>
+        )}
+        {post && <VotePost post={post} />}
+        <hr />
         <Typography variant="headline">Comments</Typography>
         {!!post && <NewComment parentId={post.id} />}
-        {!!post && <CommentList postId={post.id}/>}
+        {!!post && <CommentList postId={post.id} />}
       </div>
     );
   }

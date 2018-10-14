@@ -5,3 +5,10 @@
 .CardPost {
     width: 100%;
 }
+
+.VotePost {
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

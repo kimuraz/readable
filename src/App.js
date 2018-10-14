@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, Switch } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import Header from './views/Header';
 import RootView from './views/RootView';
-import DetailView from './views/DetailView';
+import DetailView from './views/posts/DetailView';
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 class App extends Component {
   render() {
@@ -16,8 +16,11 @@ class App extends Component {
         <main>
           <Router history={history}>
             <div>
-              <Route exact path='/' component={RootView} />
-              <Route path='/posts/:id' component={DetailView} />
+              <Switch>
+                <Route exact path="/" component={RootView} />
+                <Route exact path="/:category" component={RootView} />
+                <Route path="/:category/:id" component={DetailView} />
+              </Switch>
             </div>
           </Router>
         </main>
